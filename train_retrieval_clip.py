@@ -264,7 +264,7 @@ def parse_args():
 
     args.output_predictions_path = args.output_model_path + '~predictions.json'
 
-
+    return args
 
 def clip_forward(model, image, text):
     if len(image.shape) == 5:
