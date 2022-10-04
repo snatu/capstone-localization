@@ -100,7 +100,7 @@ class CLIPDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, idx):
         c_data = self.data[idx]
-        image = Image.open(self.args.flickr_dir+"/"+c_data["Flicker30kID"])
+        image = Image.open(self.args.flickr_dir+"/"+c_data["Flickr30kID"])
 
 
         # clue = clip.tokenize(c_data['inputs']['clue'], truncate=True).squeeze()
