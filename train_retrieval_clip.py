@@ -165,7 +165,7 @@ def parse_args():
 
     parser.add_argument(
         '--flickr_dir',
-        default='images/',
+        default='/flickr30k_images/flickr30k_images',
         help='directory with all of the Flickr30K images')
 
     parser.add_argument('--lr',
