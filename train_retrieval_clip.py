@@ -28,7 +28,7 @@ class SquarePad:
         return F.pad(image, padding, 0, 'constant')
 
 
-class SNLIVEDataset(torch.utils.data.Dataset):
+class CLIPDataset(torch.utils.data.Dataset):
     def __init__(self, data, args, training=False):
         self.args = args
         self.data = data
