@@ -318,6 +318,11 @@ def main():
     np.random.seed(1)
 
     args.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    
+    print()
+    print(args.device)
+    print()
+    
     model, preprocess = clip.load(args.clip_model, jit=False)
 
     try:
