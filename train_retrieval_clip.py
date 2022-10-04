@@ -264,11 +264,6 @@ def parse_args():
 
     args.output_predictions_path = args.output_model_path + '~predictions.json'
 
-    if args.vcr_dir[-1] != '/':
-        args.vcr_dir += '/'
-    if args.vg_dir[-1] != '/':
-        args.vg_dir += '/'
-    return args
 
 
 def clip_forward(model, image, text):
