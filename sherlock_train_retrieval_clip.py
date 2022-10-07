@@ -408,7 +408,7 @@ def main():
 
     model.float()
 
-    print('train/val/test {}/{}/{}'.format(len(train), len(val), len(test)))
+    print('train/val {}/{}'.format(len(train), len(val), ))
 
     loss_img = torch.nn.CrossEntropyLoss()
     loss_txt = torch.nn.CrossEntropyLoss()
