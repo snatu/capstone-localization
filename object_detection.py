@@ -6,7 +6,7 @@ import pprint
 from PIL import Image, ImageDraw
 import spacy 
 
-import tqdm
+from tqdm import tqdm
 
 # Some basic setup:
 # Setup detectron2 logger
