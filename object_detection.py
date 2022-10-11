@@ -112,6 +112,10 @@ def main():
 
         noun = noun_extractor(nlp, clue)
         im_obj = detect(predictor, url, obj_classes)
+        
+        print(clue)
+        print(noun)
+        print(im_obj)
 
         if common (noun, im_obj):
             score+=1
