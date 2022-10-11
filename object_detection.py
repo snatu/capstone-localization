@@ -106,6 +106,7 @@ def main():
 
     incorrect = []
     for i in data:
+        print(i)
         url = url2filepath(args, i["inputs"]["image"]["url"])
         clue = i["clue"]
 
