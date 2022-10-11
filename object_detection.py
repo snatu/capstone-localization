@@ -55,20 +55,15 @@ def url2filepath(args, url):
             return args.vcr_dir + '/'.join(url.split('/')[-3:])
 
 
-def detect (url):
+def detect (predictor, url, obj_classes):
     im = cv2.imread(url)
-    cv2_imshow(im)
-    cfg = get_cfg()
-    # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
-    cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
-    # Find a model from detectron2's model zoo. You can use the https://dl.fbaipublicfiles... url as well
-    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
-    predictor = DefaultPredictor(cfg)
+    #cv2_imshow(im)
+
+    
     outputs = predictor(im)
     pred = outputs["instances"].pred_classes.tolist()
 
-    obj_classes = MetadataCatalog.get(cfg.DATASETS.TRAIN[0]).thing_classes
+
 
     pred = [obj_classes[0] for i in pred]
 
@@ -89,6 +84,17 @@ def common (noun, im_obj):
 def main():
 
     args = parse_args()
+    
+    
+    cfg = get_cfg()
+    # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
+    cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
+    # Find a model from detectron2's model zoo. You can use the https://dl.fbaipublicfiles... url as well
+    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
+    predictor = DefaultPredictor(cfg)
+    
+    obj_classes = MetadataCatalog.get(cfg.DATASETS.TRAIN[0]).thing_classes
 
     f = open(args.json)
     data = json.load(f)
@@ -104,13 +110,14 @@ def main():
         clue = i["clue"]
 
         noun = noun(nlp, clue)
-        im_obj = detect(url)
+        im_obj = detect(predictor, url, obj_classes)
 
         if common (noun, im_obj):
             score+=1
         else:
             incorrect.append((i["inputs"]["image"]["url"], i["instance_id"]))
         count+=1
+        break
 
     print(incorrect)
     print(score)
