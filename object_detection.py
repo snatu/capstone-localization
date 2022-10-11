@@ -69,7 +69,7 @@ def detect (predictor, url, obj_classes):
 
     return pred
 
-def noun (nlp, clue):
+def noun_extractor (nlp, clue):
     doc = nlp(clue)
     noun = []
     for chunk in doc.noun_chunks:
@@ -109,7 +109,7 @@ def main():
         url = url2filepath(args, i["inputs"]["image"]["url"])
         clue = i["inputs"]["clue"]
 
-        noun = noun(nlp, clue)
+        noun = noun_extractor(nlp, clue)
         im_obj = detect(predictor, url, obj_classes)
 
         if common (noun, im_obj):
