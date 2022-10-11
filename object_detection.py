@@ -59,7 +59,7 @@ def detect (predictor, url, obj_classes):
     im = cv2.imread(url)
     #cv2_imshow(im)
 
-    
+    print(type(im))
     outputs = predictor(im)
     pred = outputs["instances"].pred_classes.tolist()
 
@@ -107,6 +107,7 @@ def main():
     incorrect = []
     for i in data:
         url = url2filepath(args, i["inputs"]["image"]["url"])
+        print(url)
         clue = i["inputs"]["clue"]
 
         noun = noun_extractor(nlp, clue)
