@@ -106,7 +106,7 @@ def main():
 
     incorrect = []
     for i in data:
-        url = url2filepath(i["inputs"]["image"]["url"])
+        url = url2filepath(args, i["inputs"]["image"]["url"])
         clue = i["clue"]
 
         noun = noun(nlp, clue)
