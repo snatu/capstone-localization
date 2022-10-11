@@ -6,6 +6,7 @@ import pprint
 from PIL import Image, ImageDraw
 import spacy 
 
+import tqdm
 
 # Some basic setup:
 # Setup detectron2 logger
@@ -58,8 +59,6 @@ def url2filepath(args, url):
 def detect (predictor, url, obj_classes):
     im = cv2.imread(url)
     #cv2_imshow(im)
-
-    print(type(im))
     outputs = predictor(im)
     pred = outputs["instances"].pred_classes.tolist()
 
@@ -108,24 +107,20 @@ def main():
     count = 0
 
     incorrect = []
-    for i in data:
+    for i in tqdm(data, total = len(data)):
         url = url2filepath(args, i["inputs"]["image"]["url"])
-        print(url)
+
         clue = i["inputs"]["clue"]
 
         noun = noun_extractor(nlp, clue)
         im_obj = detect(predictor, url, obj_classes)
         
-        print(clue)
-        print(noun)
-        print(im_obj)
 
         if common (noun, im_obj):
             score+=1
         else:
             incorrect.append((i["inputs"]["image"]["url"], i["instance_id"]))
         count+=1
-        break
 
     print(incorrect)
     print(score)
