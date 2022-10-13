@@ -158,7 +158,7 @@ def get_objects():
         url = url2filepath(args, u)       
         im_obj = detect(predictor, url, obj_classes)
         
-        obj_dict[u] = list(set(img_obj)
+        obj_dict[u] = list(set(img_obj))
         
         
         
