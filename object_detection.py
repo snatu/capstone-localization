@@ -41,7 +41,10 @@ def parse_args():
         '--vg_dir',
         default='images/',
         help='directory with visual genome data, contains VG_100K and VG_100K_2')
-
+    
+    parser.add_argument(
+        "--task", default = "objects")
+    
     args = parser.parse_args()
     return args
 
@@ -80,11 +83,9 @@ def common (noun, im_obj):
         return True
     return False
 
-def main():
+def overlap():
 
-    args = parse_args()
-    
-    
+        
     cfg = get_cfg()
     # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
     #cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
@@ -126,11 +127,50 @@ def main():
     print(score)
 
     
+def get_objects():
+    
+    
+    cfg = get_cfg()
+    # add project-specific config (e.g., TensorMask) here if you're not running a model in detectron2's core library
+    #cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
+    cfg.merge_from_file(model_zoo.get_config_file("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml"))
+    
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # set threshold for this model
+    # Find a model from detectron2's model zoo. You can use the https://dl.fbaipublicfiles... url as well
+    #cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
+    cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url("COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml")
+    predictor = DefaultPredictor(cfg)
+    
+    obj_classes = MetadataCatalog.get(cfg.DATASETS.TRAIN[0]).thing_classes
 
+    f = open(args.json)
+    data = json.load(f)
+    
+    urls = []
+    
+    for i in tqdm(data, total = len(data)):
+        urls.append(i["inputs"]["image"]["url"])
         
+    urls = list(set(urls))
+    
+    obj_dict ={}
+    for u in urls:
+        url = url2filepath(args, u)       
+        im_obj = detect(predictor, url, obj_classes)
+        
+        obj_dict[u] = list(set(img_obj)
+        
+        
+        
+    with open("val_object.json", "w") as outfile:
+        json.dump(obj_dict, outfile)
 
 
 
 if __name__ == '__main__':
-    main()
+    args = parse_args()
+    if arg.task == "object":
+        get_objects()
+    else:
+        overlap()
     
